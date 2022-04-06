@@ -19,58 +19,59 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Cafeterías registradas',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primarySwatch: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0x1c162eff),
+          foregroundColor: Color(0xffffffff),
+          shadowColor: Color(0x555062ff),
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const CafeteriasListPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class CafeteriasListPage extends StatefulWidget {
+  const CafeteriasListPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<CafeteriasListPage> createState() => _CafeteriasListPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class _CafeteriasListPageState extends State<CafeteriasListPage> {
+  final _cafeterias = [
+    Cafeteria("Cafetería central Isabela", 1600, 400),
+    Cafeteria("Restaurante Bristo", 1000, 25),
+    Cafeteria("Restaurante Snack Café", 80, 20),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text("Cafeterías registradas"),
+        actions: [
+          IconButton(
+              onPressed: navigateToForecastPage,
+              icon: const Icon(Icons.bar_chart_rounded),
+              tooltip: "Predecir ocupación",
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: const Text("Hello world") // TODO configurar la lista,
     );
   }
+
+  void navigateToForecastPage() {}
+}
+
+class Cafeteria {
+  String name;
+  DateTime? lastUpdated;
+  int maxCapacity;
+  int tables;
+
+  Cafeteria(this.name, this.maxCapacity, this.tables) {}
 }
