@@ -23,9 +23,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         //primarySwatch: Colors.blue,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0x1c162eff),
+          backgroundColor: Color(0xff1c162e), //0x1c162eff
           foregroundColor: Color(0xffffffff),
-          shadowColor: Color(0x555062ff),
+          shadowColor: Color(0xff555062),
         ),
       ),
       home: const CafeteriasListPage(),
@@ -42,36 +42,68 @@ class CafeteriasListPage extends StatefulWidget {
 
 class _CafeteriasListPageState extends State<CafeteriasListPage> {
   final _cafeterias = [
-    Cafeteria("Cafetería central Isabela", 1600, 400),
-    Cafeteria("Restaurante Bristo", 1000, 25),
-    Cafeteria("Restaurante Snack Café", 80, 20),
+    Cafeteria("Cafetería central Isabela", 1600, 400,
+        image: "assets/images/central.png"),
+    Cafeteria("Restaurante Bristo", 1000, 25,
+        image: "assets/images/bristo.png"),
+    Cafeteria("Restaurante Snack Café", 80, 20,
+        image: "assets/images/snack.png"),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final tiles = _cafeterias.map((cafeteria) {
+      return ListTile(
+        leading: Image(
+          image: AssetImage(cafeteria.image),
+        ),
+        title: Text(cafeteria.name),
+        trailing: IconButton(
+          icon: const Icon(Icons.pie_chart_rounded),
+          onPressed: _navigateToForecastPage,
+          color: Colors.blueGrey,
+          tooltip: "Mostrar ocupación",
+        ),
+        subtitle: Text('Última actualización\n' +
+            cafeteria.lastUpdated.toString() +
+            '\n\nCapacidad máxima' + '\n\t(personas): ' +
+            cafeteria.maxCapacity.toString() +
+            '\n\t(mesas): ' +
+            cafeteria.tables.toString()),
+        contentPadding: const EdgeInsets.all(4.0),
+      );
+    });
+    final divided = _cafeterias.isNotEmpty
+        ? ListTile.divideTiles(context: context, tiles: tiles).toList()
+        : <Widget>[];
     return Scaffold(
       appBar: AppBar(
         title: const Text("Cafeterías registradas"),
         actions: [
           IconButton(
-              onPressed: navigateToForecastPage,
-              icon: const Icon(Icons.bar_chart_rounded),
-              tooltip: "Predecir ocupación",
+            onPressed: _navigateToForecastPage,
+            icon: const Icon(Icons.bar_chart_rounded),
+            tooltip: "Predecir ocupación",
           ),
         ],
       ),
-      body: const Text("Hello world") // TODO configurar la lista,
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: divided,
+      ),
     );
   }
 
-  void navigateToForecastPage() {}
+  void _navigateToForecastPage() {}
 }
 
 class Cafeteria {
   String name;
   DateTime? lastUpdated;
+  String image;
   int maxCapacity;
   int tables;
 
-  Cafeteria(this.name, this.maxCapacity, this.tables) {}
+  Cafeteria(this.name, this.maxCapacity, this.tables,
+      {this.lastUpdated, this.image = "assets/images/appicon.png"});
 }
