@@ -50,6 +50,8 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         image: "assets/images/snack.png"),
   ];
 
+  var _notificationsOn = false;
+
   @override
   Widget build(BuildContext context) {
     final tiles = _cafeterias.map((cafeteria) {
@@ -60,13 +62,14 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         title: Text(cafeteria.name),
         trailing: IconButton(
           icon: const Icon(Icons.pie_chart_rounded),
-          onPressed: _navigateToForecastPage,
+          onPressed: _navigateToAvailabilityPage,
           color: Colors.blueGrey,
           tooltip: "Mostrar ocupación",
         ),
         subtitle: Text('Última actualización\n' +
             cafeteria.lastUpdated.toString() +
-            '\n\nCapacidad máxima' + '\n\t(personas): ' +
+            '\n\nCapacidad máxima' +
+            '\n\t(personas): ' +
             cafeteria.maxCapacity.toString() +
             '\n\t(mesas): ' +
             cafeteria.tables.toString()),
@@ -81,7 +84,7 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         title: const Text("Cafeterías registradas"),
         actions: [
           IconButton(
-            onPressed: _navigateToForecastPage,
+            onPressed: _navigateToAvailabilityPage,
             icon: const Icon(Icons.bar_chart_rounded),
             tooltip: "Predecir ocupación",
           ),
@@ -94,7 +97,40 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
     );
   }
 
-  void _navigateToForecastPage() {}
+  // TODO hacer un método parecido a este para la pantalla de forecast y ponerlo en el onPressed del boton con el icono de barchart
+  void _navigateToAvailabilityPage() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text('Ocupación en tiempo real'),
+                actions: [
+                  IconButton(
+                    icon: _notificationsOn
+                        ? const Icon(Icons.notifications_on)
+                        : const Icon(Icons.notifications_off_outlined),
+                    onPressed: () {
+                      // FIXME para poder que al modificar el estado desde este "popup" se actualizara
+                      // FIXME el icono de notificaciones tuve que retornar un StatefulBuilder, no sé
+                      // FIXME si es buena práctica o como hacerlo diferente
+                      print(
+                          'El cambiar el estado (_notificationOn) no actualiza el icono de notificaciones, supongo que por alguna razón llama al builder de la pantalla de la lista pero no el de esta página que se pusó sobre el stack');
+                      setState(() {
+                        _notificationsOn = !_notificationsOn;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              body: const Text('Hello worlddddd'),
+            );
+          },
+        );
+      }),
+    );
+  }
 }
 
 class Cafeteria {
