@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LiveOccupation extends StatefulWidget{
   @override
@@ -14,7 +15,8 @@ class _OccupationState extends State<LiveOccupation> {
     return Scaffold(
       backgroundColor: Color(0xff1c162e),
       appBar: AppBar(
-        title: const Text('Ocupación en tiempo real'),
+        title: Text('Ocupación en tiempo real',
+        style: GoogleFonts.montserrat(fontSize: 22),),
         actions: [
           IconButton(
             icon: _notificationsOn
@@ -37,11 +39,9 @@ class _OccupationState extends State<LiveOccupation> {
                     borderRadius: BorderRadius.all(Radius.circular(12))),
                 color: Color(0xff1c162e)),
             child: Column(children: <Widget>[
-              const Text(
+              Text(
                 "CAFETERÍA ISABEL", //your text here
-                style: TextStyle(
-                  color: Colors.white, //your textColor
-                ),
+                style: GoogleFonts.montserrat(fontSize: 16, color: Colors.white)
               ),
               Image.asset('assets/images/central.png'),
             ]),
@@ -52,18 +52,14 @@ class _OccupationState extends State<LiveOccupation> {
                     side:BorderSide(color: Colors.white24),
                     borderRadius: BorderRadius.all(Radius.circular(12))),
                 color: Colors.white),
-            child: Column(children: const <Widget>[
+            child: Column(children: <Widget>[
               Text(
                 "Ocupación de mesas", //your text here
-                style: TextStyle(
-                  color: Colors.black, //your textColor
-                ),
+                style: GoogleFonts.montserrat(fontSize: 12, color: Colors.black),
               ),
               Text(
                 "76/100", //your text here
-                style: TextStyle(
-                  color: Colors.grey, //your textColor
-                ),
+                style: GoogleFonts.montserrat(fontSize: 12, color: Colors.black),
               ),
             ]),
           ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'liveOccupation.dart';
 import 'prediction.dart';
+
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -21,9 +23,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cafeterías registradas',
-      theme: ThemeData(
-        //primarySwatch: Colors.blue,
+      debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+        fontFamily: 'Montserrat',
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xff1c162e), //0x1c162eff
           foregroundColor: Color(0xffffffff),
@@ -49,11 +51,11 @@ class CafeteriasListPage extends StatefulWidget {
 
 class _CafeteriasListPageState extends State<CafeteriasListPage> {
   final _cafeterias = [
-    Cafeteria("Cafetería central Isabela", 1600, 400,
+    Cafeteria( "Cafetería central Isabela", 1600, 400,lastUpdated: DateTime.now(),
         image: "assets/images/central.png"),
-    Cafeteria("Restaurante Bristo", 1000, 25,
+    Cafeteria("Restaurante Bristo", 1000, 25, lastUpdated: DateTime.now(),
         image: "assets/images/bristo.png"),
-    Cafeteria("Restaurante Snack Café", 80, 20,
+    Cafeteria("Restaurante Snack Café", 80, 20, lastUpdated: DateTime.now(),
         image: "assets/images/snack.png"),
   ];
 
@@ -90,7 +92,8 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         : <Widget>[];
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cafeterías registradas"),
+        title: Text("Cafeterías registradas",
+        style: GoogleFonts.montserrat(fontSize: 22),),
         actions: [
           IconButton(
             onPressed: (){
@@ -105,38 +108,6 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         padding: const EdgeInsets.all(16.0),
         children: divided,
       ),
-    );
-  }
-
-  // TODO hacer un método parecido a este para la pantalla de forecast y ponerlo en el onPressed del boton con el icono de barchart
-  void _navigateToAvailabilityPage() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text('Ocupación en tiempo real'),
-                actions: [
-                  IconButton(
-                    icon: _notificationsOn
-                        ? const Icon(Icons.notifications_on)
-                        : const Icon(Icons.notifications_off_outlined),
-                    onPressed: () {
-                      print(
-                          'El cambiar el estado (_notificationOn) no actualiza el icono de notificaciones, supongo que por alguna razón llama al builder de la pantalla de la lista pero no el de esta página que se pusó sobre el stack');
-                      setState(() {
-                        _notificationsOn = !_notificationsOn;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              body: const Text('Hello worlddddd'),
-            );
-          },
-        );
-      }),
     );
   }
 }
