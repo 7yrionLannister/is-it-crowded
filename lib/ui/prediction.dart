@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:is_it_crowded/main.dart';
+import 'package:is_it_crowded/ui/main.dart';
 
-class Prediction extends StatefulWidget{
+class Prediction extends StatefulWidget {
   @override
   _PredictionState createState() => _PredictionState();
 }
 
 class _PredictionState extends State<Prediction> {
-
   DateTime dateForPrediction = DateTime.now();
 
   var cafeterias = ["Isabel", "Central", "Bristo"];
@@ -17,18 +16,16 @@ class _PredictionState extends State<Prediction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xffffffff),
-        appBar: AppBar(
-          title: const Text(
-            'Predicción de aforo',
-            style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 22.0
-            ),
-          ),
+      backgroundColor: const Color(0xffffffff),
+      appBar: AppBar(
+        title: const Text(
+          'Predicción de aforo',
+          style: TextStyle(fontFamily: 'Montserrat', fontSize: 22.0),
         ),
-        body: Container(
-          margin: const EdgeInsets.only(left: 65.0, right: 85.0, top: 50.0, bottom: 10.0),
+      ),
+      body: Container(
+          margin: const EdgeInsets.only(
+              left: 65.0, right: 85.0, top: 50.0, bottom: 10.0),
           decoration: const BoxDecoration(
             color: Color(0xffffffff),
           ),
@@ -37,7 +34,7 @@ class _PredictionState extends State<Prediction> {
             children: [
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget> [
+                  children: <Widget>[
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: const <Widget>[
@@ -61,8 +58,7 @@ class _PredictionState extends State<Prediction> {
                                 child: Text(cafeterias),
                               );
                             }).toList(),
-                            onChanged: (String? value)
-                            {
+                            onChanged: (String? value) {
                               setState(() {
                                 selectedvalue = value!;
                               });
@@ -71,8 +67,7 @@ class _PredictionState extends State<Prediction> {
                         ),
                       ],
                     ),
-                  ]
-              ),
+                  ]),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -99,8 +94,7 @@ class _PredictionState extends State<Prediction> {
                               child: Text(cafeterias),
                             );
                           }).toList(),
-                          onChanged: (String? value)
-                          {
+                          onChanged: (String? value) {
                             setState(() {
                               selectedvalue = value!;
                             });
@@ -112,8 +106,7 @@ class _PredictionState extends State<Prediction> {
                 ],
               )
             ],
-          )
-        ),
+          )),
     );
   }
 }
