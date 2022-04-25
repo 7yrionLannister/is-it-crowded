@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'liveOccupation.dart';
 import 'prediction.dart';
@@ -92,8 +91,10 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         : <Widget>[];
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cafeterías registradas",
-        style: GoogleFonts.montserrat(fontSize: 22),),
+        title: const Text("Cafeterías registradas",
+        style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: 22.0)),
         actions: [
           IconButton(
             onPressed: (){

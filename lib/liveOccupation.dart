@@ -15,8 +15,10 @@ class _OccupationState extends State<LiveOccupation> {
     return Scaffold(
       backgroundColor: Color(0xff1c162e),
       appBar: AppBar(
-        title: Text('Ocupación en tiempo real',
-        style: GoogleFonts.montserrat(fontSize: 22),),
+        title: const Text('Ocupación en tiempo real',
+        style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: 22.0)),
         actions: [
           IconButton(
             icon: _notificationsOn
@@ -39,9 +41,14 @@ class _OccupationState extends State<LiveOccupation> {
                     borderRadius: BorderRadius.all(Radius.circular(12))),
                 color: Color(0xff1c162e)),
             child: Column(children: <Widget>[
-              Text(
+              const Text(
                 "CAFETERÍA ISABEL", //your text here
-                style: GoogleFonts.montserrat(fontSize: 16, color: Colors.white)
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontSize: 18.0
+                ),
               ),
               Image.asset('assets/images/central.png'),
             ]),
@@ -52,15 +59,17 @@ class _OccupationState extends State<LiveOccupation> {
                     side:BorderSide(color: Colors.white24),
                     borderRadius: BorderRadius.all(Radius.circular(12))),
                 color: Colors.white),
-            child: Column(children: <Widget>[
+            child: Column(children: const <Widget>[
               Text(
                 "Ocupación de mesas", //your text here
-                style: GoogleFonts.montserrat(fontSize: 12, color: Colors.black),
-              ),
-              Text(
-                "76/100", //your text here
-                style: GoogleFonts.montserrat(fontSize: 12, color: Colors.black),
-              ),
+                style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat',
+                fontSize: 18.0)),
+              Text("76/100",
+                style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 16.0)),
             ]),
           ),
         ]),
