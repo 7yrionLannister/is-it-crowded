@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:is_it_crowded/ui/main.dart';
 
 class Prediction extends StatefulWidget {
+  const Prediction({Key? key}) : super(key: key);
+
   @override
   _PredictionState createState() => _PredictionState();
 }

@@ -1,26 +1,27 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:is_it_crowded/ui/main.dart';
 
 import '../model/cafeteria.dart';
 
+final List<Cafeteria> cafeteriasList = [];
+
 class CafeteriasListPage extends StatefulWidget {
-  const CafeteriasListPage({Key? key}) : super(key: key);
+  CafeteriasListPage(List<Cafeteria> cafeterias, {Key? key}) : super(key: key) {
+    cafeteriasList.addAll(cafeterias);
+  }
 
   @override
   State<CafeteriasListPage> createState() => _CafeteriasListPageState();
 }
 
 class _CafeteriasListPageState extends State<CafeteriasListPage> {
-  final _cafeterias = [
-    Cafeteria("Cafetería central Isabela", 1600, 400,
-        lastUpdated: DateTime.now(), image: "assets/images/central.png"),
-    Cafeteria("Restaurante Bristo", 1000, 25,
-        lastUpdated: DateTime.now(), image: "assets/images/bristo.png"),
-    Cafeteria("Restaurante Snack Café", 80, 20,
-        lastUpdated: DateTime.now(), image: "assets/images/snack.png"),
-  ];
+  final List<Cafeteria> _cafeterias = [];
 
-  var _notificationsOn = false;
+  @override
+  void initState() {
+    super.initState();
+    _cafeterias.addAll(cafeteriasList);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +34,7 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         trailing: IconButton(
           icon: const Icon(Icons.pie_chart_rounded),
           onPressed: () {
+            MyApp.current = cafeteria;
             Navigator.pushNamed(context, '/liveOccupation');
           },
           color: Colors.blueGrey,

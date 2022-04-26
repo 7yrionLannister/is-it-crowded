@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import '../model/cafeteria.dart';
+
+Cafeteria currentCafeteria = Cafeteria("name", 999, 999);
 
 class LiveOccupation extends StatefulWidget {
+  LiveOccupation(Cafeteria cafeteria, {Key? key}) : super(key: key) {
+    currentCafeteria = cafeteria;
+  }
+
   @override
   _OccupationState createState() => _OccupationState();
 }
@@ -10,9 +17,15 @@ class _OccupationState extends State<LiveOccupation> {
   var _notificationsOn = false;
 
   @override
+  void initState() {
+    super.initState();
+    _notificationsOn = currentCafeteria.notificationsOn;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff1c162e),
+        backgroundColor: const Color(0xff1c162e),
         appBar: AppBar(
           title: const Text('Ocupación en tiempo real',
               style: TextStyle(fontFamily: 'Montserrat', fontSize: 22.0)),
@@ -39,15 +52,15 @@ class _OccupationState extends State<LiveOccupation> {
                       borderRadius: BorderRadius.all(Radius.circular(12))),
                   color: Color(0xff1c162e)),
               child: Column(children: <Widget>[
-                const Text(
-                  "CAFETERÍA ISABEL", //your text here
-                  style: TextStyle(
+                Text(
+                  currentCafeteria.name,
+                  style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Montserrat',
                       fontSize: 18.0),
                 ),
-                Image.asset('assets/images/central.png'),
+                Image.asset(currentCafeteria.image),
               ]),
             ),
             DecoratedBox(
@@ -56,14 +69,14 @@ class _OccupationState extends State<LiveOccupation> {
                       side: BorderSide(color: Colors.white24),
                       borderRadius: BorderRadius.all(Radius.circular(12))),
                   color: Colors.white),
-              child: Column(children: const <Widget>[
-                Text("Ocupación de mesas", //your text here
+              child: Column(children: <Widget>[
+                const Text("Ocupación de mesas",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Montserrat',
                         fontSize: 18.0)),
-                Text("76/100",
-                    style: TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
+                Text(currentCafeteria.tablesOcupation.toString() + '/' + currentCafeteria.tables.toString(),
+                    style: const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
               ]),
             ),
           ]),
