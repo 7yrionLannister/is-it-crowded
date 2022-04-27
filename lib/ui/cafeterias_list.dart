@@ -12,7 +12,7 @@ class CafeteriasListPage extends StatefulWidget {
 
 class _CafeteriasListPageState extends State<CafeteriasListPage> {
   final _cafeterias = [
-    Cafeteria("Cafetería central Isabela", 1600, 400,
+    Cafeteria("Cafetería central Isabela", 1600, 400, tablesOcupation: 150, peopleOcupation: 1000,
         lastUpdated: DateTime.now(), image: "assets/images/central.png"),
     Cafeteria("Restaurante Bristo", 1000, 25,
         lastUpdated: DateTime.now(), image: "assets/images/bristo.png"),
@@ -34,29 +34,33 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
-                  return Scaffold(
-                    backgroundColor: const Color(0xff1c162e),
-                    appBar: AppBar(
-                      title: const Text(
-                          "Ocupación en vivo",
-                          style: TextStyle(
-                              fontFamily: 'Montserrat', fontSize: 22.0
+                  return StatefulBuilder(
+                      builder: (context, setState) {
+                        return Scaffold(
+                          backgroundColor: const Color(0xff1c162e),
+                          appBar: AppBar(
+                            title: const Text(
+                              "Ocupación en vivo",
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat', fontSize: 22.0
+                              ),
+                            ),
+                            actions: [
+                              IconButton(
+                                icon: cafeteria.notificationsOn
+                                    ? const Icon(Icons.notifications_on)
+                                    : const Icon(Icons.notifications_off_outlined),
+                                onPressed: () {
+                                  setState(() {
+                                    cafeteria.notificationsOn = !cafeteria.notificationsOn;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
-                      ),
-                      actions: [
-                        IconButton(
-                          icon: cafeteria.notificationsOn
-                              ? const Icon(Icons.notifications_on)
-                              : const Icon(Icons.notifications_off_outlined),
-                          onPressed: () {
-                            setState(() {
-                              cafeteria.notificationsOn = !cafeteria.notificationsOn;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    body: LiveOccupation(cafeteria),
+                          body: LiveOccupation(cafeteria),
+                        );
+                      }
                   );
                 },
               ),
