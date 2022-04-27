@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:is_it_crowded/ui/main.dart';
+import 'package:is_it_crowded/ui/live_occupation.dart';
 
 import '../model/cafeteria.dart';
 
-final List<Cafeteria> cafeteriasList = [];
-
 class CafeteriasListPage extends StatefulWidget {
-  CafeteriasListPage(List<Cafeteria> cafeterias, {Key? key}) : super(key: key) {
-    cafeteriasList.addAll(cafeterias);
-  }
+  const CafeteriasListPage({Key? key}) : super(key: key);
 
   @override
   State<CafeteriasListPage> createState() => _CafeteriasListPageState();
 }
 
 class _CafeteriasListPageState extends State<CafeteriasListPage> {
-  final List<Cafeteria> _cafeterias = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _cafeterias.addAll(cafeteriasList);
-  }
+  final _cafeterias = [
+    Cafeteria("Cafetería central Isabela", 1600, 400,
+        lastUpdated: DateTime.now(), image: "assets/images/central.png"),
+    Cafeteria("Restaurante Bristo", 1000, 25,
+        lastUpdated: DateTime.now(), image: "assets/images/bristo.png"),
+    Cafeteria("Restaurante Snack Café", 80, 20,
+        lastUpdated: DateTime.now(), image: "assets/images/snack.png"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +31,37 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         trailing: IconButton(
           icon: const Icon(Icons.pie_chart_rounded),
           onPressed: () {
-            MyApp.current = cafeteria;
-            Navigator.pushNamed(context, '/liveOccupation');
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) {
+                  return Scaffold(
+                    backgroundColor: const Color(0xff1c162e),
+                    appBar: AppBar(
+                      title: const Text(
+                          "Ocupación en vivo",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat', fontSize: 22.0
+                          ),
+                      ),
+                      actions: [
+                        IconButton(
+                          icon: cafeteria.notificationsOn
+                              ? const Icon(Icons.notifications_on)
+                              : const Icon(Icons.notifications_off_outlined),
+                          onPressed: () {
+                            setState(() {
+                              cafeteria.notificationsOn = !cafeteria.notificationsOn;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    body: LiveOccupation(cafeteria),
+                  );
+                },
+              ),
+            );
+            //Navigator.pushNamed(context, '/liveOccupation');
           },
           color: Colors.blueGrey,
           tooltip: "Mostrar ocupación",
