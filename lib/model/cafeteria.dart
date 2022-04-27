@@ -5,9 +5,11 @@ class Cafeteria {
   int maxCapacity;
   int tables;
   bool notificationsOn;
-  int tablesOcupation;
-  int peopleOcupation;
+  int tablesOccupation;
+  int peopleOccupation;
+  Map<DateTime, int> tablesOccupationHistory = {};
+  Map<DateTime, int> peopleOccupationHistory = {};
 
   Cafeteria(this.name, this.maxCapacity, this.tables,
-      {this.lastUpdated, this.image = "assets/images/appicon.png", this.notificationsOn = false, this.tablesOcupation = 0, this.peopleOcupation = 0});
+      {this.lastUpdated, this.image = "assets/images/appicon.png", this.notificationsOn = false, this.tablesOccupation = 0, this.peopleOccupation = 0});
 }

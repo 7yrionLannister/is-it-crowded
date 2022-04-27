@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 //import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'cafeterias_list.dart';
-import 'live_occupation.dart';
 import 'prediction.dart';
 
 void main() {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  //debugPaintSizeEnabled = true;
+  //WidgetsBinding widgetsBinding =
+  WidgetsFlutterBinding.ensureInitialized();
   //FlutterNativeSplash.removeAfter(initialization); // uncomment this and the "initialization method if initial resource usage requires it"
   runApp(const MyApp());
 }
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           fontFamily: 'Montserrat',
           appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xff1c162e), //0x1c162eff
+            backgroundColor: Color(0xff1c162e),
             foregroundColor: Color(0xffffffff),
             shadowColor: Color(0xff555062),
           ),

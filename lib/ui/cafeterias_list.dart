@@ -12,8 +12,11 @@ class CafeteriasListPage extends StatefulWidget {
 
 class _CafeteriasListPageState extends State<CafeteriasListPage> {
   final _cafeterias = [
-    Cafeteria("Cafetería central Isabela", 1600, 400, tablesOcupation: 150, peopleOcupation: 1000,
-        lastUpdated: DateTime.now(), image: "assets/images/central.png"),
+    Cafeteria("Cafetería central Isabela", 1600, 400,
+        tablesOccupation: 150,
+        peopleOccupation: 1000,
+        lastUpdated: DateTime.now(),
+        image: "assets/images/central.png"),
     Cafeteria("Restaurante Bristo", 1000, 25,
         lastUpdated: DateTime.now(), image: "assets/images/bristo.png"),
     Cafeteria("Restaurante Snack Café", 80, 20,
@@ -34,34 +37,32 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
-                  return StatefulBuilder(
-                      builder: (context, setState) {
-                        return Scaffold(
-                          backgroundColor: const Color(0xff1c162e),
-                          appBar: AppBar(
-                            title: const Text(
-                              "Ocupación en vivo",
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat', fontSize: 22.0
-                              ),
-                            ),
-                            actions: [
-                              IconButton(
-                                icon: cafeteria.notificationsOn
-                                    ? const Icon(Icons.notifications_on)
-                                    : const Icon(Icons.notifications_off_outlined),
-                                onPressed: () {
-                                  setState(() {
-                                    cafeteria.notificationsOn = !cafeteria.notificationsOn;
-                                  });
-                                },
-                              ),
-                            ],
+                  return StatefulBuilder(builder: (context, setState) {
+                    return Scaffold(
+                      backgroundColor: const Color(0xff1c162e),
+                      appBar: AppBar(
+                        title: const Text(
+                          "Ocupación en vivo",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat', fontSize: 22.0),
+                        ),
+                        actions: [
+                          IconButton(
+                            icon: cafeteria.notificationsOn
+                                ? const Icon(Icons.notifications_on)
+                                : const Icon(Icons.notifications_off_outlined),
+                            onPressed: () {
+                              setState(() {
+                                cafeteria.notificationsOn =
+                                    !cafeteria.notificationsOn;
+                              });
+                            },
                           ),
-                          body: LiveOccupation(cafeteria),
-                        );
-                      }
-                  );
+                        ],
+                      ),
+                      body: LiveOccupation(cafeteria),
+                    );
+                  });
                 },
               ),
             );
@@ -77,7 +78,7 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
             cafeteria.maxCapacity.toString() +
             '\n\t(mesas): ' +
             cafeteria.tables.toString()),
-        contentPadding: const EdgeInsets.all(4.0),
+        contentPadding: const EdgeInsets.symmetric(vertical: 4),
       );
     });
     final divided = _cafeterias.isNotEmpty
@@ -98,7 +99,7 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         children: divided,
       ),
     );

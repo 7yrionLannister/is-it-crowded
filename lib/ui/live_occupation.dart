@@ -14,7 +14,10 @@ class LiveOccupation extends StatelessWidget {
         id: "Ocupación de mesas",
         domainFn: (int i, _) => i,
         measureFn: (int j, _) => j,
-        data: [cafeteria.tablesOcupation, cafeteria.tables - cafeteria.tablesOcupation],
+        data: [
+          cafeteria.tablesOccupation,
+          cafeteria.tables - cafeteria.tablesOccupation
+        ],
       ),
     ];
     final List<charts.Series<dynamic, num>> peopleOccupationList = [
@@ -22,7 +25,10 @@ class LiveOccupation extends StatelessWidget {
         id: "Ocupación de sillas",
         domainFn: (int i, _) => i,
         measureFn: (int j, _) => j,
-        data: [cafeteria.peopleOcupation, cafeteria.maxCapacity - cafeteria.peopleOcupation],
+        data: [
+          cafeteria.peopleOccupation,
+          cafeteria.maxCapacity - cafeteria.peopleOccupation
+        ],
       ),
     ];
     return SafeArea(
@@ -58,10 +64,17 @@ class LiveOccupation extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Montserrat',
                     fontSize: 18.0)),
-            Text(cafeteria.tablesOcupation.toString() + '/' + cafeteria.tables.toString(),
-                style: const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
+            Text(
+                cafeteria.tablesOccupation.toString() +
+                    '/' +
+                    cafeteria.tables.toString(),
+                style:
+                    const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
             SizedBox(
-              child: charts.PieChart(tablesOccupationList, animate: true),
+              child: charts.PieChart(
+                tablesOccupationList,
+                animate: true,
+              ),
               width: 200,
               height: 200,
             ),
@@ -79,8 +92,12 @@ class LiveOccupation extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Montserrat',
                     fontSize: 18.0)),
-            Text(cafeteria.maxCapacity.toString() + '/' + cafeteria.peopleOcupation.toString(),
-                style: const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
+            Text(
+                cafeteria.maxCapacity.toString() +
+                    '/' +
+                    cafeteria.peopleOccupation.toString(),
+                style:
+                    const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
             SizedBox(
               child: charts.PieChart(peopleOccupationList, animate: true),
               width: 200,

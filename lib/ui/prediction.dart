@@ -46,7 +46,7 @@ class _PredictionState extends State<Prediction> {
                                 fontSize: 22.0)),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Column(
                       children: <Widget>[
                         SizedBox(
@@ -82,7 +82,7 @@ class _PredictionState extends State<Prediction> {
                               fontSize: 22.0)),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     children: <Widget>[
                       SizedBox(
