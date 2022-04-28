@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:d_chart/d_chart.dart';
 
 import '../model/cafeteria.dart';
 
@@ -93,13 +95,80 @@ class LiveOccupation extends StatelessWidget {
                     fontFamily: 'Montserrat',
                     fontSize: 18.0)),
             Text(
-                cafeteria.maxCapacity.toString() +
+                cafeteria.peopleOccupation.toString() +
                     '/' +
-                    cafeteria.peopleOccupation.toString(),
+                     cafeteria.maxCapacity.toString(),
                 style:
                     const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
             SizedBox(
               child: charts.PieChart(peopleOccupationList, animate: true),
+              width: 200,
+              height: 200,
+            ),
+          ]),
+        ),
+        DecoratedBox(
+          decoration: const ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.white24),
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
+              color: Colors.white),
+          child: Column(children: <Widget>[
+            const Text("Ocupación de sillas",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontSize: 18.0)),
+            Text(
+                cafeteria.peopleOccupation.toString() +
+                    '/' +
+                    cafeteria.maxCapacity.toString(),
+                style:
+                    const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
+            SfCircularChart(
+              series: <DoughnutSeries<int, String>>[
+                DoughnutSeries<int, String>(
+                  explode: true,
+                  explodeIndex: 0,
+                  dataSource: [
+                    cafeteria.tablesOccupation,
+                    cafeteria.tables - cafeteria.tablesOccupation
+                  ],
+                  xValueMapper: (int i, _) => i.toString(),
+                  yValueMapper: (int j, _) => j,
+                ),
+              ],
+            ),
+          ]),
+        ),
+        DecoratedBox(
+          decoration: const ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.white24),
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
+              color: Colors.white),
+          child: Column(children: <Widget>[
+            const Text("Ocupación de sillas",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontSize: 18.0)),
+            Text(
+                cafeteria.peopleOccupation.toString() +
+                    '/' +
+                    cafeteria.maxCapacity.toString(),
+                style:
+                const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
+            SizedBox(
+              child: DChartPie(
+                data: [
+                  {'domain': 'Ocupado', 'measure': cafeteria.peopleOccupation},
+                  {'domain': 'Libre', 'measure': cafeteria.maxCapacity - cafeteria.peopleOccupation},
+                ],
+                fillColor: (pieData, index) => index != 0 ? Colors.blueGrey[400] : Colors.blue,
+                donutWidth: 30,
+                labelColor: Colors.white,
+              ),
               width: 200,
               height: 200,
             ),
