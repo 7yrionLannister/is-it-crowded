@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:d_chart/d_chart.dart';
 
 import '../model/cafeteria.dart';
 
@@ -11,28 +9,6 @@ class LiveOccupation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<charts.Series<dynamic, num>> tablesOccupationList = [
-      charts.Series<int, int>(
-        id: "Ocupación de mesas",
-        domainFn: (int i, _) => i,
-        measureFn: (int j, _) => j,
-        data: [
-          cafeteria.tablesOccupation,
-          cafeteria.tables - cafeteria.tablesOccupation
-        ],
-      ),
-    ];
-    final List<charts.Series<dynamic, num>> peopleOccupationList = [
-      charts.Series<int, int>(
-        id: "Ocupación de sillas",
-        domainFn: (int i, _) => i,
-        measureFn: (int j, _) => j,
-        data: [
-          cafeteria.peopleOccupation,
-          cafeteria.maxCapacity - cafeteria.peopleOccupation
-        ],
-      ),
-    ];
     return SafeArea(
       minimum: const EdgeInsets.all(15.0),
       child: ListView(children: <Widget>[
@@ -54,6 +30,7 @@ class LiveOccupation extends StatelessWidget {
             Image.asset(cafeteria.image),
           ]),
         ),
+        const SizedBox(width: 20, height: 10,),
         DecoratedBox(
           decoration: const ShapeDecoration(
               shape: RoundedRectangleBorder(
@@ -71,76 +48,40 @@ class LiveOccupation extends StatelessWidget {
                     '/' +
                     cafeteria.tables.toString(),
                 style:
-                    const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
+                const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
             SizedBox(
-              child: charts.PieChart(
-                tablesOccupationList,
-                animate: true,
+              child: SfCircularChart(
+                  annotations: <CircularChartAnnotation>[
+                    CircularChartAnnotation(
+                        widget: PhysicalModel(
+                            child: Container(),
+                            shape: BoxShape.circle,
+                            elevation: 10,
+                            shadowColor: Colors.black,
+                            color: const Color.fromRGBO(230, 230, 230, 1))),
+                    CircularChartAnnotation(
+                        widget: Text((cafeteria.tablesOccupation / cafeteria.tables * 100).toStringAsFixed(1) + '%',
+                            style: const TextStyle(
+                                color: Color.fromRGBO(0, 0, 0, 0.5), fontSize: 25)))
+                  ],
+                  borderWidth: 10,
+                  series: <CircularSeries>[
+                    DoughnutSeries<int, String>(
+                        dataSource: [cafeteria.tablesOccupation, cafeteria.tables - cafeteria.tablesOccupation],
+                        xValueMapper: (int data, _) => data.toString(),
+                        yValueMapper: (int data, _) => data,
+                        pointColorMapper: (int data, _) => _.isOdd ? Colors.grey : Colors.blue,
+                        // Radius of doughnut
+                        radius: '90%'
+                    )
+                  ]
               ),
               width: 200,
               height: 200,
             ),
           ]),
         ),
-        DecoratedBox(
-          decoration: const ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.white24),
-                  borderRadius: BorderRadius.all(Radius.circular(12))),
-              color: Colors.white),
-          child: Column(children: <Widget>[
-            const Text("Ocupación de sillas",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    fontSize: 18.0)),
-            Text(
-                cafeteria.peopleOccupation.toString() +
-                    '/' +
-                     cafeteria.maxCapacity.toString(),
-                style:
-                    const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
-            SizedBox(
-              child: charts.PieChart(peopleOccupationList, animate: true),
-              width: 200,
-              height: 200,
-            ),
-          ]),
-        ),
-        DecoratedBox(
-          decoration: const ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.white24),
-                  borderRadius: BorderRadius.all(Radius.circular(12))),
-              color: Colors.white),
-          child: Column(children: <Widget>[
-            const Text("Ocupación de sillas",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    fontSize: 18.0)),
-            Text(
-                cafeteria.peopleOccupation.toString() +
-                    '/' +
-                    cafeteria.maxCapacity.toString(),
-                style:
-                    const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
-            SfCircularChart(
-              series: <DoughnutSeries<int, String>>[
-                DoughnutSeries<int, String>(
-                  explode: true,
-                  explodeIndex: 0,
-                  dataSource: [
-                    cafeteria.tablesOccupation,
-                    cafeteria.tables - cafeteria.tablesOccupation
-                  ],
-                  xValueMapper: (int i, _) => i.toString(),
-                  yValueMapper: (int j, _) => j,
-                ),
-              ],
-            ),
-          ]),
-        ),
+        const SizedBox(width: 20, height: 10,),
         DecoratedBox(
           decoration: const ShapeDecoration(
               shape: RoundedRectangleBorder(
@@ -160,14 +101,31 @@ class LiveOccupation extends StatelessWidget {
                 style:
                 const TextStyle(fontFamily: 'Montserrat', fontSize: 16.0)),
             SizedBox(
-              child: DChartPie(
-                data: [
-                  {'domain': 'Ocupado', 'measure': cafeteria.peopleOccupation},
-                  {'domain': 'Libre', 'measure': cafeteria.maxCapacity - cafeteria.peopleOccupation},
-                ],
-                fillColor: (pieData, index) => index != 0 ? Colors.blueGrey[400] : Colors.blue,
-                donutWidth: 30,
-                labelColor: Colors.white,
+              child: SfCircularChart(
+                  annotations: <CircularChartAnnotation>[
+                    CircularChartAnnotation(
+                        widget: PhysicalModel(
+                            child: Container(),
+                            shape: BoxShape.circle,
+                            elevation: 10,
+                            shadowColor: Colors.black,
+                            color: const Color.fromRGBO(230, 230, 230, 1))),
+                    CircularChartAnnotation(
+                        widget: Text((cafeteria.peopleOccupation / cafeteria.maxCapacity * 100).toStringAsFixed(1) + '%',
+                            style: const TextStyle(
+                                color: Color.fromRGBO(0, 0, 0, 0.5), fontSize: 25)))
+                  ],
+                  borderWidth: 10,
+                  series: <CircularSeries>[
+                    DoughnutSeries<int, String>(
+                        dataSource: [cafeteria.peopleOccupation, cafeteria.maxCapacity - cafeteria.peopleOccupation],
+                        xValueMapper: (int data, _) => data.toString(),
+                        yValueMapper: (int data, _) => data,
+                        pointColorMapper: (int data, _) => _.isOdd ? Colors.grey : Colors.blue,
+                        // Radius of doughnut
+                        radius: '90%'
+                    )
+                  ]
               ),
               width: 200,
               height: 200,
