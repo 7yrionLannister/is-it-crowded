@@ -1,3 +1,5 @@
+import 'package:is_it_crowded/model/cafeteriaData.dart';
+
 class Cafeteria {
   String name;
   DateTime? lastUpdated;
@@ -7,8 +9,8 @@ class Cafeteria {
   bool notificationsOn;
   int tablesOccupation;
   int peopleOccupation;
-  Map<DateTime, int> tablesOccupationHistory = {};
-  Map<DateTime, int> peopleOccupationHistory = {};
+  List<CafeteriaData> tablesOccupationHistory = [];
+  List<CafeteriaData> peopleOccupationHistory = [];
 
   Cafeteria(this.name, this.maxCapacity, this.tables,
       {this.lastUpdated, this.image = "assets/images/appicon.png", this.notificationsOn = false, this.tablesOccupation = 0, this.peopleOccupation = 0});
