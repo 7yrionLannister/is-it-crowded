@@ -24,6 +24,17 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    var isabel = _cafeterias[0];
+    var dateTime = DateTime(2022);
+    isabel.tablesOccupationHistoryMap.putIfAbsent(dateTime, () => 10);
+    isabel.tablesOccupationHistoryMap.putIfAbsent(dateTime.add(const Duration(minutes: 30)), () => 20);
+    isabel.tablesOccupationHistoryMap.putIfAbsent(dateTime.add(const Duration(minutes: 60)), () => 30);
+    isabel.tablesOccupationHistoryMap.putIfAbsent(dateTime.add(const Duration(minutes: 90)), () => 40);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final tiles = _cafeterias.map((cafeteria) {
       return ListTile(
