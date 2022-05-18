@@ -1,4 +1,4 @@
-import 'package:is_it_crowded/model/cafeteriaData.dart';
+import 'package:is_it_crowded/model/cafeteria_data.dart';
 
 class Cafeteria {
   String name;
@@ -9,11 +9,9 @@ class Cafeteria {
   bool notificationsOn;
   int tablesOccupation;
   int peopleOccupation;
-  List<CafeteriaData> tablesOccupationHistory = [];
-  List<CafeteriaData> peopleOccupationHistory = [];
-  Map<DateTime, int> tablesOccupationHistoryMap = {};
-  Map<DateTime, int> peopleOccupationHistoryMap = {};
+  List<OccupationTimestamp> tablesOccupationHistory = [];
+  List<OccupationTimestamp> peopleOccupationHistory = [];
 
   Cafeteria(this.name, this.maxCapacity, this.tables,
-      {this.lastUpdated, this.image = "assets/images/appicon.png", this.notificationsOn = false, this.tablesOccupation = 0, this.peopleOccupation = 0});
+      {this.lastUpdated, this.image = "assets/images/appicon.png", this.notificationsOn = false, this.tablesOccupation = 0, this.peopleOccupation = 0, this.peopleOccupationHistory = const[], this.tablesOccupationHistory = const[]});
 }

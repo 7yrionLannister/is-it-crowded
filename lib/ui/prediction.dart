@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:is_it_crowded/model/cafeteriaData.dart';
+import 'package:is_it_crowded/model/cafeteria_data.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../model/cafeteria.dart';
 
 
 class Prediction extends StatefulWidget {
-  const Prediction({Key? key}) : super(key: key);
+  final List<Cafeteria> cafeterias;
+  const Prediction(this.cafeterias, {Key? key}) : super(key: key);
   @override
   _PredictionState createState() => _PredictionState();
 }
@@ -12,16 +15,15 @@ class Prediction extends StatefulWidget {
 class _PredictionState extends State<Prediction> {
   DateTime dateForPrediction = DateTime.now();
 
-  var cafeterias = ["Cafetería central Isabela", "Restaurante Snack Café", "Restaurante Bristo"];
-  var selectedvalue = "Restaurante Bristo";
+  List<Cafeteria> cafeterias = [];
+  late Cafeteria selectedCafeteria;
 
-  List<CafeteriaData> tablesOccupationData = [
-    CafeteriaData(10, 20),
-    CafeteriaData(20, 40),
-    CafeteriaData(30, 10),
-    CafeteriaData(40, 30),
-  ];
-  List<CafeteriaData> peopleOccupationData = [];
+  @override
+  void initState() {
+    super.initState();
+    cafeterias = widget.cafeterias;
+    selectedCafeteria = cafeterias.first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,17 +65,17 @@ class _PredictionState extends State<Prediction> {
                       Column(
                         children: <Widget>[
                           SizedBox(
-                            child: DropdownButton(
-                              value: selectedvalue,
-                              items: cafeterias.map((String cafeterias) {
+                            child: DropdownButton<Cafeteria>(
+                              value: selectedCafeteria,
+                              items: cafeterias.map((Cafeteria cafeteria) {
                                 return DropdownMenuItem(
-                                  value: cafeterias,
-                                  child: Text(cafeterias),
+                                  value: cafeteria,
+                                  child: Text(cafeteria.name),
                                 );
                               }).toList(),
-                              onChanged: (String? value) {
+                              onChanged: (Cafeteria? value) {
                                 setState(() {
-                                  selectedvalue = value!;
+                                  selectedCafeteria = value!;
                                 });
                               },
                             ),
@@ -127,9 +129,9 @@ class _PredictionState extends State<Prediction> {
                                     );
                                   },
                                   context: context,
-                                  initialDate: DateTime(2023),
+                                  initialDate: DateTime.now(),
                                   firstDate: DateTime.now(),
-                                  lastDate: DateTime(2030)
+                                  lastDate: DateTime.now().add(const Duration(days: 7)),
                               );
                             },
                           ),
@@ -139,69 +141,70 @@ class _PredictionState extends State<Prediction> {
                   ],
                 ),
                 const Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: <Widget>[
-                        const Text("Ocupación de mesas",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Montserrat',
-                                fontSize: 18.0)
-                        ),
-                        SizedBox(
-                          child: SfCartesianChart(
-                              series: <ChartSeries>[
-                                // Renders spline chart
-                                SplineSeries<CafeteriaData, int>(
-                                  dataSource: tablesOccupationData,
-                                  xValueMapper: (CafeteriaData data, _) => data.time,
-                                  yValueMapper: (CafeteriaData data, _) => data.occupation,
-                                )
-                              ]
-                          ),
-                          width: 300,
-                          height: 250,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: <Widget>[
-                        const Text("Ocupación de sillas",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Montserrat',
-                                fontSize: 18.0)
-                        ),
-                        SizedBox(
-                          child: SfCartesianChart(
-                              series: <ChartSeries>[
-                                // Renders spline chart
-                                SplineSeries<CafeteriaData, int>(
-                                  dataSource: peopleOccupationData,
-                                  xValueMapper: (CafeteriaData data, _) => data.time,
-                                  yValueMapper: (CafeteriaData data, _) => data.occupation,
-                                )
-                              ]
-                          ),
-                          width: 300,
-                          height: 250,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                _buildSplineChart("Ocupación de mesas", selectedCafeteria.tablesOccupationHistory, Colors.pinkAccent),
+                _buildSplineChart("Ocupación de sillas", selectedCafeteria.peopleOccupationHistory, Colors.deepPurpleAccent),
               ],
             )
         ),
         ],
       )
     );
+  }
+
+  Widget _buildSplineChart(String title, List<OccupationTimestamp> completeData, Color color) {
+    var data = _filterDataForOneDay(completeData);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Column(
+          children: <Widget>[
+            Text(title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontSize: 18.0)
+            ),
+            SizedBox(
+              child: SfCartesianChart(
+                primaryXAxis: CategoryAxis(),
+                  series: <ChartSeries>[
+                    // Renders spline chart
+                    SplineSeries<OccupationTimestamp, String>(
+                      dataSource: data,
+                      xValueMapper: (OccupationTimestamp ot, _) => _dateTimeToHourAndMinuteString(ot.time, _.isEven),
+                      yValueMapper: (OccupationTimestamp ot, _) => ot.occupation,
+                      color: color,
+                    )
+                  ]
+              ),
+              width: 300,
+              height: 250,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  List<OccupationTimestamp> _filterDataForOneDay(List<OccupationTimestamp> completeData) {
+    List<OccupationTimestamp> filtered = [];
+    for(OccupationTimestamp ot in completeData) {
+      if(ot.time.day == dateForPrediction.day) {
+        filtered.add(ot);
+      }
+    }
+    return filtered;
+  }
+
+  String _dateTimeToHourAndMinuteString(DateTime dateTime, bool isEven) {
+    String hour = dateTime.hour.toString();
+    if(hour.length < 2) {
+      hour = '0' + hour;
+    }
+    String minute = dateTime.minute.toString();
+    if(minute.length < 2) {
+      minute = '0' + minute;
+    }
+    return "$hour:$minute";
   }
 }

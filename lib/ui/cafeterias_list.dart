@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:is_it_crowded/model/cafeteria_data.dart';
 import 'package:is_it_crowded/ui/live_occupation.dart';
+import 'package:is_it_crowded/ui/prediction.dart';
 
 import '../model/cafeteria.dart';
 
@@ -16,22 +20,21 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         tablesOccupation: 150,
         peopleOccupation: 1000,
         lastUpdated: DateTime.now(),
-        image: "assets/images/central.png"),
-    Cafeteria("Restaurante Bristo", 1000, 25,
+        image: "assets/images/central.png",
+    ),
+    Cafeteria("Restaurante Bristo", 1000, 300, tablesOccupation: 160, peopleOccupation: 650,
         lastUpdated: DateTime.now(), image: "assets/images/bristo.png"),
-    Cafeteria("Restaurante Snack Café", 80, 20,
+    Cafeteria("Restaurante Snack Café", 500, 100, tablesOccupation: 95, peopleOccupation: 460,
         lastUpdated: DateTime.now(), image: "assets/images/snack.png"),
   ];
 
   @override
   void initState() {
     super.initState();
-    var isabel = _cafeterias[0];
-    var dateTime = DateTime(2022);
-    isabel.tablesOccupationHistoryMap.putIfAbsent(dateTime, () => 10);
-    isabel.tablesOccupationHistoryMap.putIfAbsent(dateTime.add(const Duration(minutes: 30)), () => 20);
-    isabel.tablesOccupationHistoryMap.putIfAbsent(dateTime.add(const Duration(minutes: 60)), () => 30);
-    isabel.tablesOccupationHistoryMap.putIfAbsent(dateTime.add(const Duration(minutes: 90)), () => 40);
+    for(Cafeteria cafeteria in _cafeterias) {
+      cafeteria.peopleOccupationHistory = populateCafeteriaDataWithDummyInformation(cafeteria.maxCapacity);
+      cafeteria.tablesOccupationHistory = populateCafeteriaDataWithDummyInformation(cafeteria.tables);
+    }
   }
 
   @override
@@ -102,7 +105,13 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/prediction');
+              //Navigator.pushNamed(context, '/prediction');
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                      return Prediction(_cafeterias);
+                    }),
+                );
             },
             icon: const Icon(Icons.bar_chart_rounded),
             tooltip: "Predecir ocupación",
@@ -114,5 +123,19 @@ class _CafeteriasListPageState extends State<CafeteriasListPage> {
         children: divided,
       ),
     );
+  }
+
+  List<OccupationTimestamp> populateCafeteriaDataWithDummyInformation(int max) {
+    Random random = Random();
+    DateTime now = DateTime.now();
+
+    List<OccupationTimestamp> dummyTimeStamps = [];
+    for(int day = 0; day < 7; day++) {
+      for(int hour = 11; hour < 15; hour++) {
+        dummyTimeStamps.add(OccupationTimestamp(DateTime(now.year, now.month, now.day + day, hour), random.nextInt(max))); // FIXME random
+        dummyTimeStamps.add(OccupationTimestamp(DateTime(now.year, now.month, now.day + day, hour, 30), random.nextInt(max))); // FIXME random
+      }
+    }
+    return dummyTimeStamps;
   }
 }

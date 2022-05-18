@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 //import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'cafeterias_list.dart';
-import 'prediction.dart';
 
 void main() {
   //debugPaintSizeEnabled = true;
@@ -34,8 +32,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: const CafeteriasListPage(),
-        routes: {
-          '/prediction': (context) => const Prediction(),
-        });
+    );
   }
 }
